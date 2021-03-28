@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { Router, Link } from '@reach/router';
+import './static/css/App.css';
+import AddUser from "./views/AddUser";
+import LoginUser from "./views/LoginUser";
+
+import { navigate } from '@reach/router';
 
 function App() {
+  const logoutUser = () => {
+    if(localStorage.getItem("loggedInUser") !== null){
+      localStorage.removeItem("loggedInUser")
+      navigate("/")
+      window.location.reload()
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>
+        Hello 
+        {
+          localStorage.getItem("loggedInUser") ?
+          <>&nbsp;{localStorage.getItem("loggedInUser")}!</>:<>!</>
+        }
+      </h1>
+      
+      <Link to="/">Home</Link>&nbsp;
+      <Link to="/users/register">Register</Link>&nbsp;
+      <Link to="/users/login">Login</Link>&nbsp;
+
+      <button onClick={logoutUser}>Logout</button>
+
+      <Router >
+        <AddUser path="/users/register"/>
+        <LoginUser path="users/login"/>
+      </Router>
     </div>
   );
 }
